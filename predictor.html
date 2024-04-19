@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Predictor</title>
+
+    <!-- CSS styling -->
+    <style>
+        /* General body styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Background image related to water pollution */
+            background-image: url('https://example.com/water-pollution.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Container styling */
+        .container {
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Title styling */
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        /* Input and button styling */
+        input[type="text"],
+        input[type="number"],
+        button {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Result styling */
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Result colors based on prediction */
+        .result.good {
+            color: green;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result.poor {
+            color: red;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Sample values styling */
+        .sample-values {
+            margin-top: 30px;
+            text-align: left;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+        }
+
+        .sample-values h2 {
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Water quality predictor container -->
+    <div class="container">
+        <h1>Water Quality Predictor</h1>
+        <div class="input-section">
+            <label for="location">Enter your location (City, State):</label><br>
+            <input type="text" id="location" placeholder="e.g., Mumbai, Maharashtra"><br>
+            
+            <label for="ph-level">Enter pH level:</label><br>
+            <input type="number" id="ph-level" step="0.1" min="0" max="14" placeholder="e.g., 7.0"><br>
+            
+            <label for="turbidity">Enter turbidity (NTU):</label><br>
+            <input type="number" id="turbidity" step="0.1" placeholder="e.g., 1.0"><br>
+            
+            <label for="hardness">Enter hardness (mg/L):</label><br>
+            <input type="number" id="hardness" placeholder="e.g., 120"><br>
+            
+            <button onclick="predictWaterQuality()">Predict Water Quality</button>
+        </div>
+        <div id="result" class="result"></div>
+
+        <!-- Sample values section -->
+        <div class="sample-values">
+            <h2>Sample Values for Popular Places in India</h2>
+            <ul>
+                <li><strong>Mumbai, Maharashtra:</strong> pH: 7.5, Turbidity: 2.5 NTU, Hardness: 120 mg/L</li>
+                <li><strong>Delhi:</strong> pH: 7.2, Turbidity: 4.0 NTU, Hardness: 180 mg/L</li>
+                <li><strong>Kolkata, West Bengal:</strong> pH: 6.8, Turbidity: 3.5 NTU, Hardness: 110 mg/L</li>
+                <li><strong>Bangalore, Karnataka:</strong> pH: 7.0, Turbidity: 1.8 NTU, Hardness: 150 mg/L</li>
+                <li><strong>Chennai, Tamil Nadu:</strong> pH: 7.3, Turbidity: 3.0 NTU, Hardness: 130 mg/L</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- JavaScript function for water quality prediction -->
+    <script>
+        function predictWaterQuality() {
+            const location = document.getElementById('location').value;
+            const phLevel = parseFloat(document.getElementById('ph-level').value);
+            const turbidity = parseFloat(document.getElementById('turbidity').value);
+            const hardness = parseFloat(document.getElementById('hardness').value);
+
+            const result = document.getElementById('result');
+            result.innerHTML = '';
+
+            let prediction = 'Water quality prediction for ' + location + ':\n';
+            let resultClass = 'good';
+
+            if (phLevel < 6.5 || phLevel > 8.5) {
+                prediction += '- pH level out of safe range (6.5-8.5).\n';
+                resultClass = 'poor';
+            }
+
+            if (turbidity > 5) {
+                prediction += '- Turbidity is high (> 5 NTU).\n';
+                resultClass = 'poor';
+            }
+
+            if (hardness > 300) {
+                prediction += '- Water is hard (> 300 mg/L).\n';
+                resultClass = 'poor';
+            }
+
+            if (prediction === 'Water quality prediction for ' + location + ':\n') {
+                prediction = 'Water quality is good based on the provided parameters.';
+            } else {
+                prediction += 'Please take necessary precautions.';
+            }
+
+            result.classList.remove('good', 'poor');
+            result.classList.add(resultClass);
+
+            result.innerHTML = `<p>${prediction}</p>`;
+        }
+    </script>
+</body>
+
+</html>
